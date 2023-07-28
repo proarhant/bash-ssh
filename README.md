@@ -27,9 +27,3 @@ Usage: download-backups.sh [ Date in yyyy-mm-dd format ]
   6. Content of the log file.
 
 ![image](https://github.com/proarhant/bash-ssh/assets/2681229/22b5307e-e884-4f40-a7f6-cd5d0a7723e6)
-
-  7. 
-  8. dd
-  9. dd
-  10. dd
-  11. dd
