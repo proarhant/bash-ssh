@@ -30,7 +30,7 @@ AUTHOR
 function cleanup()
 {
    #Quiet exit for this current version.
-   echo -e "\n`date`   [INFO] The script has existed. \n"
+   echo -e "\n`date`   [INFO] The script has exited. \n"
 }
 
 ### Checking validity of the input               ###
@@ -38,15 +38,15 @@ function cleanup()
 ###             2022-01-567 is not a valid date  ###
 ###             Only one argument is expected    ###
 
-#Ensure that only one argument is passed to the script.
+#Ensure that only one argument is passed to the script. Exit otherwise.
 [[ $# -ne 1 ]] && { echo -e "\n`date`   [INFO] Invalid number of argument."; usage; exit; }
 
-#Ensure that the argument passed is a valid date in yyyy-mm-dd format
+#Ensure that the argument passed is a valid date in yyyy-mm-dd format. Exit otherwise.
 if ! date -d "$1" "+%Y-%m-%d" >/dev/null 2>&1; then
     echo -e "\n`date`   [INFO] Invalid date $1"; usage; exit;
 fi
 
-#At this point, we have valid date input in yyyy-mm-dd format.
+#At this point, we have valid date input in yyyy-mm-dd format. Let's continue...
 
 BACKUP_DATE_YYYY_MM_DD="$1"
 REMOTE_HOST="18.212.85.177"
@@ -81,7 +81,7 @@ if ssh -i $KEY_NAME -l $USERNAME $REMOTE_HOST "test -e $REMOTE_BACKUP_DIR/$backu
       | tee -a $LOCAL_BACKUP_LOG_FILE; } || echo "[ERROR] Download of >>> $backupfile <<< was NOT successful. | tee -a $LOCAL_BACKUP_LOG_FILE"
 
   #At this stage we have the backup file downloaded in current local directory.
-  #Extract files fom the backup, then replace password in the wp-config.php file
+  #Extract files from the backup, then replace password in the wp-config.php file
   tar -xf $backupfile
 
   echo -e "`date`   [INFO] Replace the password for DB_PASSWORD... \n"
