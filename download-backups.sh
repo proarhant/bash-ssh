@@ -67,16 +67,13 @@ DIRECTIVE_TEXT="DB_PASSWORD"
 REPLACE_WITH="s5cr3t_reseT_done"
 
 echo -e "\n`date`   [INFO] The script has started... \n"
-echo -e "`date`   [CHECK] Checking existence of backup file >>> $backupfile <<< in the remote server $REMOTE_HOST ... \n"
 
-if ssh -i $KEY_NAME -l $USERNAME $REMOTE_HOST "test -e $REMOTE_BACKUP_DIR/$backupfile"; then
+echo -e "`date`   [CHECK] SCP gets the backup file >>> $backupfile <<< , if EXISTS in the remote server $REMOTE_HOST ... \n"
+if scp -i $KEY_NAME -q $USERNAME@$REMOTE_HOST:$REMOTE_BACKUP_DIR/$backupfile . ; then
    BACKUP_EXISTS=true
    sleep 1
+   #Downloaded the backup file. Now check to ensure if the file exists in local machine.
    echo -e "`date`   [VERIFY] The backup file >>> $backupfile <<< is VERIFIED in the remote server $REMOTE_HOST\n" | tee -a $LOCAL_BACKUP_LOG_FILE
-   echo -e "`date`   [INFO] DOWNLOADING >>> $backupfile <<< from the remote server $REMOTE_HOST ... \n"
-
-   #Download the backup file and then check if the file exists in local machine.
-   scp -i $KEY_NAME -q $USERNAME@$REMOTE_HOST:$REMOTE_BACKUP_DIR/$backupfile .
    [ -f "./$backupfile" ] && { echo -e "`date`   [VERIFIED & DOWNLOADED] The backup for the date $NAME_PREFIX has been verified and downloaded. \n" \
       | tee -a $LOCAL_BACKUP_LOG_FILE; } || echo "[ERROR] Download of >>> $backupfile <<< was NOT successful. | tee -a $LOCAL_BACKUP_LOG_FILE"
 
